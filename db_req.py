@@ -7,7 +7,7 @@ import time
 from datetime import datetime
 from fernet import *
 import psycopg2
-import flask
+from flask import Flask, request
 
 bot = telebot.TeleBot(TOKEN)
 conn = psycopg2.connect(dbname='d23v4g77tn2j92', user='qzusajqercdmfq',
