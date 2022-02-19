@@ -7,12 +7,14 @@ import time
 from datetime import datetime
 from fernet import *
 import psycopg2
+import flask
 
 bot = telebot.TeleBot(TOKEN)
 conn = psycopg2.connect(dbname='d23v4g77tn2j92', user='qzusajqercdmfq',
                         password='36da4de8c545b260b07dccc490b56cee3fcc72ee52a073e7fb40409e8ccf47c4', host='ec2-52-31-217-108.eu-west-1.compute.amazonaws.com')
 cursor = conn.cursor()
 conn.autocommit = True
+server = Flask(__name__)
 
 def parsing_process(message_id):
     cursor.execute(f"SELECT * FROM data WHERE user_id={message_id}")
@@ -85,6 +87,9 @@ def add_to_bd(message_id, new_list):
     cursor.execute(f"UPDATE data SET last_marks = {values[1]} WHERE user_id = {values[0]}")
 
 
+if __name__ == "__main__":
+    server.run(host="0.0.0.0", port=int(os.environ.get('PORT', 5000)))
+ 
 cursor.execute("SELECT user_id FROM data")
 test = cursor.fetchall()
 while True:
@@ -95,3 +100,4 @@ while True:
             pass
     time.sleep(0.1)
     print("YES!!!")
+    
